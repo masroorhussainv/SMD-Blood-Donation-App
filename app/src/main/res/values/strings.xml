@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Blood Donation App</string>
+    <string name="urgently_required">Urgently Required</string>
+    <string name="request_message">Message about this request</string>
+    <string name="post_request">Post Request</string>
+    <string-array name="blood_groups">
+        <item>@string/O_neg</item>
+        <item>@string/O_pos</item>
+        <item>@string/A_neg</item>
+        <item>@string/A_pos</item>
+        <item>@string/B_neg</item>
+        <item>@string/B_pos</item>
+        <item>@string/AB_neg</item>
+        <item>@string/AB_pos</item>
+    </string-array>
+
+    <string name="O_neg" />
+    <string name="O_pos" />
+    <string name="A_neg" />
+    <string name="A_pos" />
+    <string name="B_neg" />
+    <string name="B_pos" />
+    <string name="AB_neg" />
+    <string name="AB_pos" />
+
+</resources>

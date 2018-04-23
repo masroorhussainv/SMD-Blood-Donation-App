@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "327039446334",
+    "firebase_url": "https://smd-blood-donation-app.firebaseio.com",
+    "project_id": "smd-blood-donation-app",
+    "storage_bucket": "smd-blood-donation-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327039446334:android:7fed8032f3bae824",
+        "android_client_info": {
+          "package_name": "com.masroor.blooddonationapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327039446334-ccae6l4tesfd0i40o7s5qf8dv1mmgqd7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masroor.blooddonationapp",
+            "certificate_hash": "87e2a115b2af41d20ffebc9f3afd3285da63f76e"
+          }
+        },
+        {
+          "client_id": "327039446334-phpk8c0s5s6k9o76g9r07d7c4b75da6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhTequ7PxHcWJUELYEn5hw2P_BrlScLOU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327039446334-phpk8c0s5s6k9o76g9r07d7c4b75da6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
