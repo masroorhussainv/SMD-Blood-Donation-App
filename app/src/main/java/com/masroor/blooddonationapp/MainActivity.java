@@ -39,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         btnLoginSignup=findViewById(R.id.button_signin);
 
+
+        //if signed in
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            launchSignedInActivity();
+        }
+
+
         //attach listener to the signin button
         if(FirebaseAuth.getInstance().getCurrentUser()==null)
             btnLoginSignup.setOnClickListener(new View.OnClickListener() {
@@ -85,10 +92,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        //if signed in
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            launchSignedInActivity();
-        }
 
         //if not
 
@@ -129,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra(Strs.ADMIN_LOCATION_NAME,loc.getLocation_name());
                     i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
                     i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,loc.getLocation_latitude());
+                    i.putExtra(Strs.ADMIN_LOCATION_CITY,loc.getLocation_city());
                     startActivity(i);
                 }
 

@@ -14,4 +14,5 @@ public class Strs {
     public static String ADMIN_LOCATION_NAME="location_name";
     public static String ADMIN_LOCATION_LONGITUDE="location_longitude";
     public static String ADMIN_LOCATION_LATITUDE="location_latitude";
+    public static String ADMIN_LOCATION_CITY="location_city";
 }
