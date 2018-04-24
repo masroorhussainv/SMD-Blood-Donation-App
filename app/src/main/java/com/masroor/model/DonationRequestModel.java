@@ -5,8 +5,16 @@ import com.masroor.blooddonationapp.Strs;
 public class DonationRequestModel {
 
     private AdminLocationModel request_location;
-    private String blood_type,needed_by_date,message;
+    private String blood_type,needed_by_date,message,donation_request_id;
     private boolean urgent;
+
+    public String getDonation_request_id() {
+        return donation_request_id;
+    }
+
+    public void setDonation_request_id(String donation_request_id) {
+        this.donation_request_id = donation_request_id;
+    }
 
     public DonationRequestModel(AdminLocationModel request_location, String blood_type, String needed_by_date, String message, boolean urgent) {
         this.request_location = request_location;
@@ -14,6 +22,7 @@ public class DonationRequestModel {
         this.needed_by_date = needed_by_date;
         this.message = message;
         this.urgent = urgent;
+//        this.donation_request_id=req_id;
     }
 
     @Override

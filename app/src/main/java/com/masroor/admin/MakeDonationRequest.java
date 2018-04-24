@@ -18,8 +18,10 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,6 +36,11 @@ public class MakeDonationRequest extends AppCompatActivity {
             .getInstance()
             .getReference()
             .child(Strs.REQUESTS_ROOT);
+
+    final DatabaseReference dbRef_City_Requests=FirebaseDatabase
+            .getInstance()
+            .getReference()
+            .child(Strs.CITY_REQUESTS_ROOT);
 
     String[] blood_types= {
             "O-","O+",
@@ -71,7 +78,7 @@ public class MakeDonationRequest extends AppCompatActivity {
         spinnerBloodGroup.setAdapter(arrayAdapter);
 
         //extract values for admin location model
-        Bundle locationBundle=getIntent().getExtras();
+        final Bundle locationBundle=getIntent().getExtras();
         assert locationBundle != null;
         AdminLocationModel adminLocationModel=new AdminLocationModel(
                 locationBundle.getDouble(Strs.ADMIN_LOCATION_LONGITUDE),
@@ -95,27 +102,59 @@ public class MakeDonationRequest extends AppCompatActivity {
 
                     progressBar.setVisibility(View.VISIBLE);
                     //pushing the request model into firebase db
-                    dbRef_Requests
-                        .child(donation_request.getRequest_location().getLocation_city())
-                        .push()         //this generates a unique key for this request
-                        .setValue(donation_request)     //pushes complete donation req object to db
+
+                    //Requests
+                    //      -City
+                    //          -location_uid
+                    //                      -req_id         =====this one is being generated uniquely
+                    //                            -DonationRequestModel
+
+                    //generate a unique for each request entry
+                    //by concatinating admin_loc_id + firebase_generated_key
+                    final String concatenated_request_id=FirebaseAuth.getInstance().getCurrentUser().getUid()+
+                            dbRef_Requests
+                            .child(donation_request.getRequest_location().getLocation_city())
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .push().getKey();
+
+                    Log.i("key",concatenated_request_id);
+
+                    DatabaseReference ref=FirebaseDatabase.getInstance()
+                            .getReference(
+                                Strs.REQUESTS_ROOT+"/"+
+                                donation_request.getRequest_location().getLocation_city()+"/"+
+                                FirebaseAuth.getInstance().getCurrentUser().getUid()+"/"+
+                                concatenated_request_id+"/"
+                            );
+
+//                    dbRef_Requests
+//                        .child(donation_request.getRequest_location().getLocation_city())
+//                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                        +concatenated_request_id
+//                        .setValue(donation_request)     //pushes complete donation req object to db
+
+                    //pushes complete donation req object to db
+
+                    //have to write the req_id in donation model
+                    //it is needed
+                    donation_request.setDonation_request_id(concatenated_request_id);
+
+                    ref.setValue(donation_request)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                setResult(Activity.RESULT_OK);
-                                progressBar.setVisibility(View.GONE);
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        "Request could not be posted!",Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            pushToCityWiseRequestsNode(concatenated_request_id);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "Request could not be posted!",Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }
             }
 
@@ -127,6 +166,29 @@ public class MakeDonationRequest extends AppCompatActivity {
         loc.setLocation_longitude(bundle.getDouble(Strs.ADMIN_LOCATION_LONGITUDE));
         loc.setLocation_latitude(bundle.getDouble(Strs.ADMIN_LOCATION_LATITUDE));
         loc.setLocation_city(bundle.getString(Strs.ADMIN_LOCATION_CITY));
+    }
+
+    private void pushToCityWiseRequestsNode(String request_id) {
+
+        dbRef_City_Requests
+            .child(donation_request.getRequest_location().getLocation_city())
+                .child(request_id)
+                .setValue(donation_request)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            setResult(Activity.RESULT_OK);
+                            progressBar.setVisibility(View.GONE);
+                            finish();
+                        }else{
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "Request could not be posted!",Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
     private void prepareDonationRequestDataModel() {

@@ -8,10 +8,12 @@ import com.masroor.R;
 
 public class DonationRequestViewHolder extends RecyclerView.ViewHolder {
 
+    View single_itemview;
     TextView textViewLocationName,textViewBloodGroup,textViewUrgent,textViewMessage;
 
     public DonationRequestViewHolder(View itemView) {
         super(itemView);
+        single_itemview=itemView;
         textViewLocationName=itemView.findViewById(R.id.textview_request_location_name);
         textViewBloodGroup=itemView.findViewById(R.id.textview_blood_group);
         textViewUrgent=itemView.findViewById(R.id.textview_urgent);

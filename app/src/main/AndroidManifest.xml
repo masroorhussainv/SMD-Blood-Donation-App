@@ -22,7 +22,8 @@
         <activity
             android:name=".admin.MakeDonationRequest"
             android:label="Make Donation Request" />
-        <activity android:name=".admin.ManagePostedDonationRequests"></activity>
+        <activity android:name=".admin.ManagePostedDonationRequests" />
+        <activity android:name=".admin.ManageSingleDonationRequest"></activity>
     </application>
 
 </manifest>
