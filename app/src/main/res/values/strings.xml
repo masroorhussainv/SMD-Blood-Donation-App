@@ -25,5 +25,8 @@
     <string name="blood_group">Blood Group:</string>
     <string name="location_name">Location Name</string>
     <string name="urgent">Urgent</string>
+    <string name="login_or_signup">Login or Signup</string>
+    <string name="logo">App Logo image</string>
+    <string name="please_provide_info">Please provide this info</string>
 
 </resources>

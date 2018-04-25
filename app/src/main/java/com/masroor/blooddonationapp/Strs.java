@@ -2,6 +2,10 @@ package com.masroor.blooddonationapp;
 
 public class Strs {
 
+    //Cities list
+    public static String CITIES_ROOT="Cities";
+
+
     public static String REQUESTS_ROOT="Requests";
     public static String REQUEST_LOCATION="request_location";
     public static String REQUEST_BLOOD_TYPE="blood_type";
@@ -10,11 +14,18 @@ public class Strs {
     public static String REQUEST_URGENT="urgent";
 
     //Admins node
-    public static String ADMIN_LOCATIONS_ROOT="Locations";
+    public static String ADMIN_LOCATIONS_ROOT="Admin_Locations";
     public static String ADMIN_LOCATION_NAME="location_name";
     public static String ADMIN_LOCATION_LONGITUDE="location_longitude";
     public static String ADMIN_LOCATION_LATITUDE="location_latitude";
     public static String ADMIN_LOCATION_CITY="location_city";
     //City_Requests
     public static String CITY_REQUESTS_ROOT="City_Requests";
+
+    //Donors node
+    public static String DONORS_ROOT="Donors";
+    public static String DONOR_NAME="donor_name";
+    public static String DONOR_BLOOD_TYPE="donor_blood_type";
+    public static String DONOR_CITY="donor_city";
+
 }
