@@ -27,7 +27,16 @@
         <activity android:name=".donor.DonorMainActivity" />
         <activity android:name=".donor.GetDonorDetailsActivity" />
         <activity android:name=".donor.ViewRequestsList" />
-        <activity android:name=".donor.ViewSingleDonationRequest"></activity>
+        <activity android:name=".donor.ViewSingleDonationRequest" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDiwFLMNgIxdKFYJ4CN4NyhU2MLNuBFWMM" />
+
+        <activity android:name=".donor.GetDirectionsActivity" />
     </application>
 
 </manifest>

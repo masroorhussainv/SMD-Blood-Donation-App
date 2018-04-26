@@ -1,6 +1,7 @@
 package com.masroor.donor;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.mapzen.speakerbox.Speakerbox;
 import com.masroor.R;
 import com.masroor.blooddonationapp.Strs;
@@ -36,7 +38,13 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
 
         //attach listeners to appropriate views
         speakMessage.setOnClickListener(this);
-
+        btnGetDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),GetDirectionsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void referViewElements() {
