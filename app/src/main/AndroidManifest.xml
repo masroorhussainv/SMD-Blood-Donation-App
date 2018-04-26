@@ -26,6 +26,8 @@
         <activity android:name=".admin.ManageSingleDonationRequest" />
         <activity android:name=".donor.DonorMainActivity" />
         <activity android:name=".donor.GetDonorDetailsActivity" />
+        <activity android:name=".donor.ViewRequestsList" />
+        <activity android:name=".donor.ViewSingleDonationRequest"></activity>
     </application>
 
 </manifest>

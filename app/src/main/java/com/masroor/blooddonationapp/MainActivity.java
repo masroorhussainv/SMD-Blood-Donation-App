@@ -21,10 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.masroor.R;
 import com.masroor.admin.AdminMainActivity;
+import com.masroor.donor.DonorMainActivity;
 import com.masroor.donor.GetDonorDetailsActivity;
 import com.masroor.model.AdminLocationModel;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 //import admin.AdminMainActivity;
 
@@ -95,21 +98,113 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
 
-        //if not
-
     }
 
     protected void launchSignedInActivity() {
 
+        //check if current signed in use is an admin
+        DatabaseReference dbRef_Admin_Locations=FirebaseDatabase.getInstance().getReference()
+                .child(Strs.ADMIN_LOCATIONS_ROOT)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        if(firebaseAuth.getCurrentUser().getUid().equals("gD83xfxstHhhPFR4bygrSz22l7n2")){
-            //admin activity to be launched
-            launchAdminMainActivity();
-        }
-        else{
-            //donor activity to be launched
-            launchDonorMainActivity();
-        }
+        dbRef_Admin_Locations
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        //check current user's role type
+
+                        if(dataSnapshot.exists()){  //admin
+
+                            // current user is an admin
+                            Log.i("Admin data:",dataSnapshot.toString());
+
+                            //extract details
+                            AdminLocationModel loc=dataSnapshot.getValue(AdminLocationModel.class);
+
+                            //launch the admin activity
+                            Intent i=new Intent(getApplicationContext(), com.masroor.admin.AdminMainActivity.class);
+                            //put data
+                            i.putExtra(Strs.ADMIN_LOCATION_NAME,loc.getLocation_name());
+                            i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
+                            i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,loc.getLocation_latitude());
+                            i.putExtra(Strs.ADMIN_LOCATION_CITY,loc.getLocation_city());
+                            startActivity(i);
+                        }else{
+                            //current user is not and admin
+                            //is a donor role user
+
+                            launchDonorActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+//        if(firebaseAuth.getCurrentUser().getUid().equals("gD83xfxstHhhPFR4bygrSz22l7n2")){
+//            //admin activity to be launched
+//            launchAdminMainActivity();
+//        }
+//        else{
+//            //donor activity to be launched
+//            launchDonorMainActivity();
+//        }
+    }
+
+    public void launchDonorActivity(){
+
+        final ConstraintLayout cl=findViewById(R.id.constraintLayout);
+
+        Snackbar.make(cl,"Donor Signin success!",Snackbar.LENGTH_SHORT).show();
+
+        final DatabaseReference dbRef_donors=FirebaseDatabase.getInstance().getReference()
+                .child(Strs.DONORS_ROOT)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        dbRef_donors.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //check if this user already exists in the Donors node
+                Log.i("donor",dataSnapshot.toString());
+
+                if(dataSnapshot.exists()){
+                    //this uid exists
+                    Toast.makeText(getApplicationContext(),
+                            "This donor exists in database!", Toast.LENGTH_SHORT).show();
+
+                    //direct to main donor activity
+                    Intent i=new Intent(getApplicationContext(),DonorMainActivity.class);
+
+                    Log.i("datax",dataSnapshot.child(Strs.DONOR_CITY).getValue(String.class));
+                    Log.i("datax",dataSnapshot.child(Strs.DONOR_BLOOD_TYPE).getValue(String.class));
+
+                    String city=dataSnapshot.child(Strs.DONOR_CITY).getValue(String.class);
+                    String bloodtype=dataSnapshot.child(Strs.DONOR_BLOOD_TYPE).getValue(String.class);
+
+                    i.putExtra(Strs.DONOR_CITY,city);
+                    i.putExtra(Strs.DONOR_BLOOD_TYPE,bloodtype);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    finish();
+
+                }else{
+                    //add this uid to db
+                    Intent i=new Intent(getApplicationContext(), GetDonorDetailsActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void launchAdminMainActivity(){
@@ -150,40 +245,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    public void launchDonorMainActivity(){
-
-        final ConstraintLayout cl=findViewById(R.id.constraintLayout);
-
-        Snackbar.make(cl,"Donor Signin success!",Snackbar.LENGTH_SHORT).show();
-
-        final DatabaseReference dbRef_donors=FirebaseDatabase.getInstance().getReference()
-                .child(Strs.DONORS_ROOT)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        dbRef_donors.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //check if this user already exists in the Donors node
-                Log.i("donor",dataSnapshot.toString());
-                Toast.makeText(
-                        getApplicationContext(),
-                        "This donor exists in database!", Toast.LENGTH_SHORT).show();
-                if(dataSnapshot.exists()){
-                    //this uid exists
-                }else{
-                    //add this uid to db
-                    Intent i=new Intent(getApplicationContext(), GetDonorDetailsActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

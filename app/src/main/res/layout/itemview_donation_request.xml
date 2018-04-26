@@ -53,29 +53,29 @@
             android:id="@+id/textview_urgent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorAccent"
+            android:padding="2dp"
             android:text="@string/urgent"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorAccent"
+            android:textColor="#fff"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline4" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/textview_message"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
+            android:background="#d6c7c7"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:paddingBottom="5dp"
             android:text="@string/request_message"
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_urgent" />
-
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline4"

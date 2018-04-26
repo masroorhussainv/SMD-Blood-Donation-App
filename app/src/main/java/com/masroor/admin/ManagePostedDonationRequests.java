@@ -105,11 +105,6 @@ public class ManagePostedDonationRequests extends AppCompatActivity {
             public DonationRequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View v= LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.itemview_donation_request,parent,false);
-
-
-
-
-
                 return new DonationRequestViewHolder(v);
             }
         };

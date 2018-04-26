@@ -28,5 +28,8 @@
     <string name="login_or_signup">Login or Signup</string>
     <string name="logo">App Logo image</string>
     <string name="please_provide_info">Please provide this info</string>
+    <string name="donor_name">Donor Name</string>
+    <string name="speak_the_message">Speak the Message</string>
+    <string name="get_directions">Get Directions</string>
 
 </resources>

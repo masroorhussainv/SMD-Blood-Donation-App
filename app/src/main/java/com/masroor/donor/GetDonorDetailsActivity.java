@@ -1,5 +1,6 @@
 package com.masroor.donor;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,10 +60,9 @@ public class GetDonorDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_donor_details);
 
         referViewElements();
+        textViewName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         populateBloodTypesSpinner();
         populateCitiesSpinner();
-
-
     }
 
     public void uploadDonorInfo(){
@@ -78,6 +78,23 @@ public class GetDonorDetailsActivity extends AppCompatActivity {
                                     getApplicationContext(),
                                     "Donor Info Updated Successfully!",
                                     Toast.LENGTH_LONG).show();
+
+                            //direct to main donor activity
+                            Intent i=new Intent(getApplicationContext(),DonorMainActivity.class);
+                            //put the data needed
+                            Log.i(Strs.DONOR_CITY,donor_model.getDonor_city());
+                            Log.i(Strs.DONOR_BLOOD_TYPE,donor_model.getDonor_blood_type());
+
+                            i.putExtra(Strs.DONOR_CITY,donor_model.getDonor_city());
+                            i.putExtra(Strs.DONOR_BLOOD_TYPE,donor_model.getDonor_blood_type());
+
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                            finish();
+
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                            finish();
 
                         }else {
                             Toast.makeText(

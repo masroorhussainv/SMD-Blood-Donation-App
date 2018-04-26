@@ -20,6 +20,7 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
     DatabaseReference dbRef_city_reqs,dbRef_reqs;
     String  location_name,blood_type,request_message,
             req_id,req_city,req_loc_id;
+
     boolean urg;
     TextView textViewUrgent,textViewLocationName,textViewBloodType,textViewMessage;
     Button btnSpeakMessage,btnDeleteRequest;
