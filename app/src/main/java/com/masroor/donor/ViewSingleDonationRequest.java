@@ -1,22 +1,27 @@
 package com.masroor.donor;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mapzen.speakerbox.Speakerbox;
 import com.masroor.R;
 import com.masroor.blooddonationapp.Strs;
 
-public class ViewSingleDonationRequest extends AppCompatActivity {
+public class ViewSingleDonationRequest extends AppCompatActivity implements View.OnClickListener {
+
+    Activity activity=this;
 
     double longitude,latitude;
     String  location_name,blood_type,request_message;
 
     boolean urg;
     TextView textViewUrgent,textViewLocationName,textViewBloodType,textViewMessage;
-    Button btnSpeakMessage;
+    Button btnSpeakMessage,btnGetDirections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,10 @@ public class ViewSingleDonationRequest extends AppCompatActivity {
         referViewElements();
         extractIntentData();
         populateViewElements();
+
+        //attach listeners to appropriate views
+        btnSpeakMessage.setOnClickListener(this);
+
     }
 
     private void referViewElements() {
@@ -34,6 +43,7 @@ public class ViewSingleDonationRequest extends AppCompatActivity {
         textViewMessage = findViewById(R.id.textview_message);
         textViewUrgent = findViewById(R.id.textview_urgent);
         btnSpeakMessage = findViewById(R.id.button_speak_message);
+        btnGetDirections=findViewById(R.id.button_get_directions);
     }
 
     public void extractIntentData(){
@@ -53,6 +63,22 @@ public class ViewSingleDonationRequest extends AppCompatActivity {
         textViewMessage.setText(request_message);
         if(!urg){
             textViewUrgent.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pressed_id=v.getId();
+
+        switch (pressed_id){
+
+            case R.id.button_speak_message:{
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Speaking!", Toast.LENGTH_SHORT).show();
+                Speakerbox speakerbox = new Speakerbox(activity.getApplication());
+                speakerbox.play(request_message);
+            }break;
         }
     }
 }

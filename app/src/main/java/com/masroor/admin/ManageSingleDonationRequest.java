@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mapzen.speakerbox.Speakerbox;
 import com.masroor.R;
 import com.masroor.blooddonationapp.Strs;
 
@@ -38,7 +39,8 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
         btnSpeakMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Speakerbox speakerbox = new Speakerbox(getApplication());
+                speakerbox.play(request_message);
             }
         });
 
@@ -107,7 +109,6 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     public void deleteFromCityRequestsPath (){
