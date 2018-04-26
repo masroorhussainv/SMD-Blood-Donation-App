@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +25,8 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
 
     boolean urg;
     TextView textViewUrgent,textViewLocationName,textViewBloodType,textViewMessage;
-    Button btnSpeakMessage,btnDeleteRequest;
+    Button btnDeleteRequest;
+    ImageView speakMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,8 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
         extractIntentData();
         populateViewElements();
 
-        //set listeners on the buttons
-        btnSpeakMessage.setOnClickListener(new View.OnClickListener() {
+        //set listeners on the views
+        speakMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Speakerbox speakerbox = new Speakerbox(getApplication());
@@ -66,7 +68,7 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
         textViewBloodType=findViewById(R.id.textview_blood_group);
         textViewMessage=findViewById(R.id.textview_message);
         textViewUrgent=findViewById(R.id.textview_urgent);
-        btnSpeakMessage=findViewById(R.id.button_speak_message);
+        speakMessage=findViewById(R.id.button_speak_message);
         btnDeleteRequest=findViewById(R.id.button_delete_request);
     }
 

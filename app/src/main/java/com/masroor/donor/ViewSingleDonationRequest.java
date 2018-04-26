@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,8 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
 
     boolean urg;
     TextView textViewUrgent,textViewLocationName,textViewBloodType,textViewMessage;
-    Button btnSpeakMessage,btnGetDirections;
+    Button btnGetDirections;
+    ImageView speakMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
         populateViewElements();
 
         //attach listeners to appropriate views
-        btnSpeakMessage.setOnClickListener(this);
+        speakMessage.setOnClickListener(this);
 
     }
 
@@ -42,7 +44,7 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
         textViewBloodType = findViewById(R.id.textview_blood_group);
         textViewMessage = findViewById(R.id.textview_message);
         textViewUrgent = findViewById(R.id.textview_urgent);
-        btnSpeakMessage = findViewById(R.id.button_speak_message);
+        speakMessage = findViewById(R.id.button_speak_message);
         btnGetDirections=findViewById(R.id.button_get_directions);
     }
 
