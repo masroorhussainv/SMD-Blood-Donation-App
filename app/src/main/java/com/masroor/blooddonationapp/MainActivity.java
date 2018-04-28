@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     protected void launchSignedInActivity() {
 
         progressBar.setVisibility(View.VISIBLE);
-        //check if current signed in use is an admin
+        //check if current signed in user is an admin
         DatabaseReference dbRef_Admin_Locations=FirebaseDatabase.getInstance().getReference()
                 .child(Strs.ADMIN_LOCATIONS_ROOT)
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -144,16 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
-
-//        if(firebaseAuth.getCurrentUser().getUid().equals("gD83xfxstHhhPFR4bygrSz22l7n2")){
-//            //admin activity to be launched
-//            launchAdminMainActivity();
-//        }
-//        else{
-//            //donor activity to be launched
-//            launchDonorMainActivity();
-//        }
     }
 
     public void launchDonorActivity(){
@@ -199,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     //add this uid to db
                     Intent i=new Intent(getApplicationContext(), GetDonorDetailsActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    progressBar.setVisibility(View.INVISIBLE);
                     startActivity(i);
                     finish();
                 }

@@ -7,11 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 
 public class DonorMainActivity extends AppCompatActivity {
+
+    AdView adView;
 
     TextView textViewName,textViewBloodType,textViewCity;
     Button btnViewRequests;
@@ -24,7 +29,8 @@ public class DonorMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donor_main);
 
         referViewElements();
-
+        initializeAdMob();
+        loadAd();
         //data to populate view elements
         donor_name= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         Bundle bundle=getIntent().getExtras();
@@ -42,13 +48,43 @@ public class DonorMainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
 
+    private void loadAd() {
+        AdRequest adRequest=new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(getString(R.string.DEVICE_ID))
+                .build();
+        adView.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        adView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
+    }
+
+    private void initializeAdMob() {
+        MobileAds.initialize(this,getString(R.string.ADMOB_APP_ID));
     }
 
     private void populateViewElements() {
         textViewName.setText(donor_name);
         textViewBloodType.setText(donor_blood_type);
         textViewCity.setText(donor_city);
+        adView=findViewById(R.id.adView);
     }
 
     private void referViewElements() {
@@ -56,5 +92,6 @@ public class DonorMainActivity extends AppCompatActivity {
         textViewBloodType=findViewById(R.id.textview_blood_type);
         textViewCity=findViewById(R.id.textview_city);
         btnViewRequests=findViewById(R.id.button_view_requests);
+        adView=findViewById(R.id.adView);
     }
 }

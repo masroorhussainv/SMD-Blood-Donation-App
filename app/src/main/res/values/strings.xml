@@ -46,5 +46,7 @@
     <!--<string name="AD_UNITID_MAINACTIVITY_BOTTOM">ca-app-pub-8061925392530760/1897711976</string>-->
 
     <string name="DEVICE_ID">3BBF596B4999C0B3DF95A6B45ED1AD66</string>
+    <string name="manage_posted_requests">Manage Posted Requests</string>
+    <string name="make_donation_request">Make Donation Request</string>
 
 </resources>

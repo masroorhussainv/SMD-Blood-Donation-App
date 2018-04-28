@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
-
+import com.masroor.blooddonationapp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdate;
@@ -17,7 +17,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 
 public class GetDirectionsActivity extends FragmentActivity implements OnMapReadyCallback {

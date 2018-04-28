@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 import com.masroor.blooddonationapp.model.AdminLocationModel;
@@ -16,6 +20,7 @@ import com.masroor.blooddonationapp.model.AdminLocationModel;
 public class AdminMainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final int RC_POST_DONATION_REQUEST = 123;
+    AdView adView;
     Bundle bundleForPostAReq;
     Button btnMakeReq,btnManageReq;
 
@@ -29,8 +34,9 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
 
-        btnMakeReq=findViewById(R.id.button_make_donation_request);
-        btnManageReq=findViewById(R.id.button_manage_requests);
+        referViewElements();
+        initializeAdMob();
+        loadAd();
 
         //receive the location data as a bundle and fwd it to post doantion req activity
         bundleForPostAReq=getIntent().getExtras();
@@ -43,6 +49,42 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         //attach listeners to the buttons
         btnMakeReq.setOnClickListener(this);
         btnManageReq.setOnClickListener(this);
+    }
+
+    private void loadAd() {
+        AdRequest adRequest=new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(getString(R.string.DEVICE_ID))
+                .build();
+        adView.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        adView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
+    }
+
+    private void initializeAdMob() {
+        MobileAds.initialize(this,getString(R.string.ADMOB_APP_ID));
+    }
+
+    private void referViewElements() {
+        btnMakeReq=findViewById(R.id.button_make_donation_request);
+        btnManageReq=findViewById(R.id.button_manage_requests);
+        adView=findViewById(R.id.adView);
     }
 
     @Override

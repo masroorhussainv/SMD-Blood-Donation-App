@@ -10,13 +10,14 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:contentDescription="@string/logo"
         android:layout_height="0dp"
+        android:contentDescription="@string/logo"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/cardview_dark_background" />
+        app:srcCompat="@drawable/blood_donation" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -29,26 +30,28 @@
         android:id="@+id/button_signin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:text="@string/login_or_signup"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button_signin"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 </android.support.constraint.ConstraintLayout>
