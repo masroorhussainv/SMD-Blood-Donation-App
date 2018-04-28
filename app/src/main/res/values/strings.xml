@@ -35,4 +35,16 @@
     //API keys
     <string name="google_maps_directions_api_key">AIzaSyAio9A2PY4l_nTdIGvjneNH4pipT3jAyDM</string>
 
+    //ADMOB AppID
+    <string name="ADMOB_APP_ID">ca-app-pub-8061925392530760~7181828243</string>
+
+    //ADMOB UnitId for mainActivity bottom ad
+    <string name="TEST_AD_UNITID">ca-app-pub-3940256099942544/6300978111</string>
+
+    <!--<string name="TEST_AD_UNITID">ca-app-pub-8061925392530760/1897711976</string>-->
+
+    <!--<string name="AD_UNITID_MAINACTIVITY_BOTTOM">ca-app-pub-8061925392530760/1897711976</string>-->
+
+    <string name="DEVICE_ID">3BBF596B4999C0B3DF95A6B45ED1AD66</string>
+
 </resources>

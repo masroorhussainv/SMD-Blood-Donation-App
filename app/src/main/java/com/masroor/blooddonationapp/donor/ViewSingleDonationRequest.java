@@ -1,4 +1,4 @@
-package com.masroor.donor;
+package com.masroor.blooddonationapp.donor;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.mapzen.speakerbox.Speakerbox;
-import com.masroor.R;
+import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 
 public class ViewSingleDonationRequest extends AppCompatActivity implements View.OnClickListener {

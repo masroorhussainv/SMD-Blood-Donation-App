@@ -1,4 +1,4 @@
-package com.masroor.model;
+package com.masroor.blooddonationapp.model;
 
 public class DonorModel {
     private String donor_uid,donor_name,donor_blood_type,donor_city;

@@ -1,4 +1,4 @@
-package com.masroor.donor;
+package com.masroor.blooddonationapp.donor;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,7 +17,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.masroor.R;
+import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 
 public class GetDirectionsActivity extends FragmentActivity implements OnMapReadyCallback {

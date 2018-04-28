@@ -1,4 +1,4 @@
-package com.masroor.model;
+package com.masroor.blooddonationapp.model;
 
 
 import com.masroor.blooddonationapp.Strs;

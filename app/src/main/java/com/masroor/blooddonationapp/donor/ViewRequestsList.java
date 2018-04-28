@@ -1,11 +1,9 @@
-package com.masroor.donor;
+package com.masroor.blooddonationapp.donor;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,15 +12,12 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.masroor.R;
-import com.masroor.admin.ManageSingleDonationRequest;
+import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
-import com.masroor.model.DonationRequestModel;
-import com.masroor.viewholder.DonationRequestViewHolder;
+import com.masroor.blooddonationapp.model.DonationRequestModel;
+import com.masroor.blooddonationapp.viewholder.DonationRequestViewHolder;
 
 public class ViewRequestsList extends AppCompatActivity {
 

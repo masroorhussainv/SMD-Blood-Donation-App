@@ -1,7 +1,6 @@
-package com.masroor.admin;
+package com.masroor.blooddonationapp.admin;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mapzen.speakerbox.Speakerbox;
-import com.masroor.R;
+import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 
 public class ManageSingleDonationRequest extends AppCompatActivity {

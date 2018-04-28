@@ -1,10 +1,10 @@
-package com.masroor.viewholder;
+package com.masroor.blooddonationapp.viewholder;
 
+import com.masroor.blooddonationapp.R;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.masroor.R;
 
 public class DonationRequestViewHolder extends RecyclerView.ViewHolder {
 

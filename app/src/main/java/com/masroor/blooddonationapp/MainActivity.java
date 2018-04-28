@@ -2,7 +2,6 @@ package com.masroor.blooddonationapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,17 +14,14 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.masroor.R;
-import com.masroor.admin.AdminMainActivity;
-import com.masroor.donor.DonorMainActivity;
-import com.masroor.donor.GetDonorDetailsActivity;
-import com.masroor.model.AdminLocationModel;
+import com.masroor.blooddonationapp.donor.DonorMainActivity;
+import com.masroor.blooddonationapp.donor.GetDonorDetailsActivity;
+import com.masroor.blooddonationapp.model.AdminLocationModel;
 
 import java.util.Arrays;
 
@@ -125,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                             AdminLocationModel loc=dataSnapshot.getValue(AdminLocationModel.class);
 
                             //launch the admin activity
-                            Intent i=new Intent(getApplicationContext(), com.masroor.admin.AdminMainActivity.class);
+                            Intent i=new Intent(getApplicationContext(), com.masroor.blooddonationapp.admin.AdminMainActivity.class);
                             //put data
                             i.putExtra(Strs.ADMIN_LOCATION_NAME,loc.getLocation_name());
                             i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
@@ -238,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 //                );
 
                 //put this data into intent
-                Intent i=new Intent(getApplicationContext(), com.masroor.admin.AdminMainActivity.class);
+                Intent i=new Intent(getApplicationContext(), com.masroor.blooddonationapp.admin.AdminMainActivity.class);
                 //put data
                 i.putExtra(Strs.ADMIN_LOCATION_NAME,loc.getLocation_name());
                 i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());

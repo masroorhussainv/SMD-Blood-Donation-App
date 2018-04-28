@@ -1,4 +1,4 @@
-package com.masroor.donor;
+package com.masroor.blooddonationapp.donor;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.masroor.R;
+import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
 
 public class DonorMainActivity extends AppCompatActivity {

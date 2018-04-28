@@ -1,4 +1,4 @@
-package com.masroor.admin;
+package com.masroor.blooddonationapp.admin;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -22,10 +22,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.masroor.R;
+import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
-import com.masroor.model.AdminLocationModel;
-import com.masroor.model.DonationRequestModel;
+import com.masroor.blooddonationapp.model.AdminLocationModel;
+import com.masroor.blooddonationapp.model.DonationRequestModel;
 
 public class MakeDonationRequest extends AppCompatActivity {
 
