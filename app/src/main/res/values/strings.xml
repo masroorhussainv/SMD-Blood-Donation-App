@@ -32,4 +32,7 @@
     <string name="speak_the_message">Speak the Message</string>
     <string name="get_directions">Get Directions</string>
 
+    //API keys
+    <string name="google_maps_directions_api_key">AIzaSyAio9A2PY4l_nTdIGvjneNH4pipT3jAyDM</string>
+
 </resources>

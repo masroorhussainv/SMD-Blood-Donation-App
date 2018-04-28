@@ -16,6 +16,7 @@
         android:background="@color/title_background"
         android:minHeight="30dp"
         android:paddingStart="5dp"
+        android:textColor="#fff"
         android:paddingEnd="5dp"
         android:text="@string/location_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"

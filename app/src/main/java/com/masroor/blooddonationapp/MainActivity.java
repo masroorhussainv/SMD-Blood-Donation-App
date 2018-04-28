@@ -2,6 +2,7 @@ package com.masroor.blooddonationapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -26,8 +28,6 @@ import com.masroor.donor.GetDonorDetailsActivity;
 import com.masroor.model.AdminLocationModel;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 //import admin.AdminMainActivity;
 
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     final int RC_FIREBASE_UI_FLOW=111;
     Button btnLoginSignup;
     FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnLoginSignup=findViewById(R.id.button_signin);
-
+        progressBar=findViewById(R.id.progress_bar);
 
         //if signed in
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void launchSignedInActivity() {
 
+        progressBar.setVisibility(View.VISIBLE);
         //check if current signed in use is an admin
         DatabaseReference dbRef_Admin_Locations=FirebaseDatabase.getInstance().getReference()
                 .child(Strs.ADMIN_LOCATIONS_ROOT)
@@ -129,7 +131,10 @@ public class MainActivity extends AppCompatActivity {
                             i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
                             i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,loc.getLocation_latitude());
                             i.putExtra(Strs.ADMIN_LOCATION_CITY,loc.getLocation_city());
+                            progressBar.setVisibility(View.INVISIBLE);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
+                            finish();
                         }else{
                             //current user is not and admin
                             //is a donor role user
@@ -188,6 +193,9 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra(Strs.DONOR_CITY,city);
                     i.putExtra(Strs.DONOR_BLOOD_TYPE,bloodtype);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    progressBar.setVisibility(View.INVISIBLE);
+
                     startActivity(i);
                     finish();
 

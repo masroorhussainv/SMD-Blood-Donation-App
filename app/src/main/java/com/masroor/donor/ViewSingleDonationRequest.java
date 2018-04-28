@@ -19,7 +19,7 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
 
     Activity activity=this;
 
-    double longitude,latitude;
+    double longitude,latitude;      //to be passed to 'Get Directions' activity
     String  location_name,blood_type,request_message;
 
     boolean urg;
@@ -37,11 +37,19 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
         populateViewElements();
 
         //attach listeners to appropriate views
+
+        //text to speech
         speakMessage.setOnClickListener(this);
+
+        //launch get directions activity
+        //pass admin location data to it
         btnGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getApplicationContext(),GetDirectionsActivity.class);
+                    intent.putExtra(Strs.ADMIN_LOCATION_LATITUDE,latitude);
+                    intent.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,longitude);
+                    intent.putExtra(Strs.ADMIN_LOCATION_NAME,location_name);
                 startActivity(intent);
             }
         });
@@ -58,6 +66,7 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
 
     public void extractIntentData(){
         //admin's location
+        //this is to be passed to 'Get Directions' activity
         longitude=getIntent().getExtras().getDouble(Strs.ADMIN_LOCATION_LONGITUDE);
         latitude=getIntent().getExtras().getDouble(Strs.ADMIN_LOCATION_LATITUDE);
         //other details

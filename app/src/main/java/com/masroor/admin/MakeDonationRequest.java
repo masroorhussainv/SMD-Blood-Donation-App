@@ -69,7 +69,7 @@ public class MakeDonationRequest extends AppCompatActivity {
         editTextRequestMessage=findViewById(R.id.edittext_request_message);
         btnPostRequest=findViewById(R.id.button_post_request);
         progressBar=findViewById(R.id.progressbar);
-
+        progressBar.setVisibility(View.INVISIBLE);
         //populate spinner view
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,blood_types);
         spinnerBloodGroup.setAdapter(arrayAdapter);
