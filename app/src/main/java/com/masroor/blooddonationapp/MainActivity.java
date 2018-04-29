@@ -1,7 +1,9 @@
 package com.masroor.blooddonationapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +31,11 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String ADMIN_LOGGED_IN = "ADMIN_LOGGED_IN";
     final int RC_FIREBASE_UI_FLOW=111;
     Button btnLoginSignup;
     FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-    ProgressBar progressBar;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnLoginSignup=findViewById(R.id.button_signin);
-        progressBar=findViewById(R.id.progress_bar);
+
 
         //if signed in
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
@@ -97,9 +100,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setSharedPrefAdminLoggedIn(boolean b){
+        SharedPreferences.Editor editor=getSharedPreferences(ADMIN_LOGGED_IN,MODE_PRIVATE).edit();
+        editor.putBoolean(ADMIN_LOGGED_IN,b);
+        editor.apply();
+    }
+
+    public boolean getSharedPrefAdminLoggedIn(){
+        SharedPreferences sp=getSharedPreferences(ADMIN_LOGGED_IN,MODE_PRIVATE);
+        return sp.getBoolean(ADMIN_LOGGED_IN,false);
+    }
+
+
     protected void launchSignedInActivity() {
 
-        progressBar.setVisibility(View.VISIBLE);
+        dialog = ProgressDialog.show(this, "",
+                "Signing in. Please wait...", true);
+
         //check if current signed in user is an admin
         DatabaseReference dbRef_Admin_Locations=FirebaseDatabase.getInstance().getReference()
                 .child(Strs.ADMIN_LOCATIONS_ROOT)
@@ -127,7 +144,9 @@ public class MainActivity extends AppCompatActivity {
                             i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
                             i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,loc.getLocation_latitude());
                             i.putExtra(Strs.ADMIN_LOCATION_CITY,loc.getLocation_city());
-                            progressBar.setVisibility(View.INVISIBLE);
+
+                            dialog.dismiss();
+
                             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                             finish();
@@ -180,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra(Strs.DONOR_BLOOD_TYPE,bloodtype);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    progressBar.setVisibility(View.INVISIBLE);
+                    dialog.dismiss();
 
                     startActivity(i);
                     finish();
@@ -189,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     //add this uid to db
                     Intent i=new Intent(getApplicationContext(), GetDonorDetailsActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    progressBar.setVisibility(View.INVISIBLE);
+
                     startActivity(i);
                     finish();
                 }
@@ -202,42 +221,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void launchAdminMainActivity(){
-        //check if this admin's uid exists in db
-        //at
-        //Admins
-        //  -Hospital_admin_uid
-        DatabaseReference dbRef_Admins= FirebaseDatabase.getInstance().getReference()
-                .child(Strs.ADMIN_LOCATIONS_ROOT)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        dbRef_Admins.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                AdminLocationModel loc;
-
-                Log.i("location",dataSnapshot.getKey());
-                loc=dataSnapshot.getValue(AdminLocationModel.class);
-//                Log.i("location",
-//                        ""+loc.getLocation_name()+
-//                                loc.getLocation_longitude()+
-//                                loc.getLocation_latitude()
-//                );
-
-                //put this data into intent
-                Intent i=new Intent(getApplicationContext(), com.masroor.blooddonationapp.admin.AdminMainActivity.class);
-                //put data
-                i.putExtra(Strs.ADMIN_LOCATION_NAME,loc.getLocation_name());
-                i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
-                i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,loc.getLocation_latitude());
-                i.putExtra(Strs.ADMIN_LOCATION_CITY,loc.getLocation_city());
-                startActivity(i);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
+////    public void launchAdminMainActivity(){
+////        //check if this admin's uid exists in db
+////        //at
+////        //Admins
+////        //  -Hospital_admin_uid
+////        DatabaseReference dbRef_Admins= FirebaseDatabase.getInstance().getReference()
+////                .child(Strs.ADMIN_LOCATIONS_ROOT)
+////                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+////
+////        dbRef_Admins.addListenerForSingleValueEvent(new ValueEventListener() {
+////            @Override
+////            public void onDataChange(DataSnapshot dataSnapshot) {
+////                AdminLocationModel loc;
+////
+////                Log.i("location",dataSnapshot.getKey());
+////                loc=dataSnapshot.getValue(AdminLocationModel.class);
+//////                Log.i("location",
+//////                        ""+loc.getLocation_name()+
+//////                                loc.getLocation_longitude()+
+//////                                loc.getLocation_latitude()
+//////                );
+////
+////                //put this data into intent
+////                Intent i=new Intent(getApplicationContext(), com.masroor.blooddonationapp.admin.AdminMainActivity.class);
+////                //put data
+////                i.putExtra(Strs.ADMIN_LOCATION_NAME,loc.getLocation_name());
+////                i.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,loc.getLocation_longitude());
+////                i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,loc.getLocation_latitude());
+////                i.putExtra(Strs.ADMIN_LOCATION_CITY,loc.getLocation_city());
+////                startActivity(i);
+////            }
+////
+////            @Override
+////            public void onCancelled(DatabaseError databaseError) {
+////            }
+////        });
+//    }
 
 }

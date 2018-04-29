@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.masroor.blooddonationapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
         android:allowBackup="true"
@@ -28,18 +28,24 @@
         <activity
             android:name=".admin.MakeDonationRequest"
             android:label="Make Donation Request" />
-        <activity android:name=".admin.ManagePostedDonationRequests"
-            android:label="Manage posted Requests"/>
-        <activity android:name=".admin.ManageSingleDonationRequest"
-            android:label="Manage Donation Request"/>
-        <activity android:name=".donor.DonorMainActivity"
-            android:label="Donor"/>
-        <activity android:name=".donor.GetDonorDetailsActivity"
-            android:label="Donor Details"/>
-        <activity android:name=".donor.ViewRequestsList"
-            android:label="View Donation Requests"/>
-        <activity android:name=".donor.ViewSingleDonationRequest"
-            android:label="Donation Request"/>
+        <activity
+            android:name=".admin.ManagePostedDonationRequests"
+            android:label="Manage posted Requests" />
+        <activity
+            android:name=".admin.ManageSingleDonationRequest"
+            android:label="Manage Donation Request" />
+        <activity
+            android:name=".donor.DonorMainActivity"
+            android:label="Donor" />
+        <activity
+            android:name=".donor.GetDonorDetailsActivity"
+            android:label="Donor Details" />
+        <activity
+            android:name=".donor.ViewRequestsList"
+            android:label="View Donation Requests" />
+        <activity
+            android:name=".donor.ViewSingleDonationRequest"
+            android:label="Donation Request" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -48,8 +54,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDiwFLMNgIxdKFYJ4CN4NyhU2MLNuBFWMM" />
 
-        <activity android:name=".donor.GetDirectionsActivity"
-            android:label="Request's Location"/>
+        <activity
+            android:name=".donor.GetDirectionsActivity"
+            android:label="Request&apos;s Location" />
+        <activity android:name=".donor.DonorFeedbackActivity"></activity>
     </application>
 
 </manifest>

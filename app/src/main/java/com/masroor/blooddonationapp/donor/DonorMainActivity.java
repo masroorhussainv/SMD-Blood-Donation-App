@@ -1,8 +1,15 @@
 package com.masroor.blooddonationapp.donor;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,9 +17,13 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+
+import static com.masroor.blooddonationapp.admin.AdminMainActivity.RC_POST_DONATION_REQUEST;
+import static com.masroor.blooddonationapp.admin.AdminMainActivity.REQUEST_INVITE;
 
 public class DonorMainActivity extends AppCompatActivity {
 
@@ -87,11 +98,87 @@ public class DonorMainActivity extends AppCompatActivity {
         adView=findViewById(R.id.adView);
     }
 
+
     private void referViewElements() {
         textViewName=findViewById(R.id.textview_donor_name);
         textViewBloodType=findViewById(R.id.textview_blood_type);
         textViewCity=findViewById(R.id.textview_city);
         btnViewRequests=findViewById(R.id.button_view_requests);
         adView=findViewById(R.id.adView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.donor_options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.backup:{
+
+                return true;
+            }
+            case R.id.invite:{
+                invite();
+                return true;
+            }
+            case R.id.feedback:{
+                Intent i=new Intent(this,DonorFeedbackActivity.class);
+                startActivity(i);
+            }break;
+            case R.id.logout:{
+                logOut();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void invite() {
+        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                .setMessage(getString(R.string.invitation_message))
+                .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+                .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
+                .setCallToActionText(getString(R.string.invitation_cta))
+                .build();
+        startActivityForResult(intent, REQUEST_INVITE);
+    }
+
+    public void logOut(){
+        ProgressDialog dialog = ProgressDialog.show(this, "",
+                "Logging out. Please wait...", true);
+
+        com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+        Intent intent=new Intent(getApplicationContext(),com.masroor.blooddonationapp.MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        dialog.dismiss();
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        ConstraintLayout cl=findViewById(R.id.cl);
+
+        switch (requestCode){
+            case REQUEST_INVITE:{
+                if(resultCode==RESULT_OK){
+                    String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                    for (String id : ids) {
+                        Snackbar.make(cl,"Invite sent successfully!",Snackbar.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Snackbar.make(cl,"No invites sent.",Snackbar.LENGTH_SHORT).show();
+                }
+            }break;
+        }
     }
 }

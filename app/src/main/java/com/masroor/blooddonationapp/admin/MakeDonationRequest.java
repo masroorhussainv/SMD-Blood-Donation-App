@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,6 +31,9 @@ import com.masroor.blooddonationapp.model.AdminLocationModel;
 import com.masroor.blooddonationapp.model.DonationRequestModel;
 
 public class MakeDonationRequest extends AppCompatActivity {
+
+    public static final String DONATION_REQUEST_ADD_EVENT = "DONATION_REQUEST_ADD_EVENT";
+    FirebaseAnalytics firebaseAnalytics;        //for logging custom event of posting a donation request
 
     final DatabaseReference dbRef_Requests= FirebaseDatabase
             .getInstance()
@@ -63,12 +69,8 @@ public class MakeDonationRequest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_make_donation_request);
 
-        spinnerBloodGroup=findViewById(R.id.spinner_blood_groups);
-        switchUrgent=findViewById(R.id.switch_urgent);
-        editTextNeededByDate=findViewById(R.id.edittext_needed_by_date);
-        editTextRequestMessage=findViewById(R.id.edittext_request_message);
-        btnPostRequest=findViewById(R.id.button_post_request);
-        progressBar=findViewById(R.id.progressbar);
+        firebaseAnalytics=FirebaseAnalytics.getInstance(this);
+        referViewElements();
         progressBar.setVisibility(View.INVISIBLE);
         //populate spinner view
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,blood_types);
@@ -165,6 +167,15 @@ public class MakeDonationRequest extends AppCompatActivity {
         loc.setLocation_city(bundle.getString(Strs.ADMIN_LOCATION_CITY));
     }
 
+    private void referViewElements() {
+        spinnerBloodGroup=findViewById(R.id.spinner_blood_groups);
+        switchUrgent=findViewById(R.id.switch_urgent);
+        editTextNeededByDate=findViewById(R.id.edittext_needed_by_date);
+        editTextRequestMessage=findViewById(R.id.edittext_request_message);
+        btnPostRequest=findViewById(R.id.button_post_request);
+        progressBar=findViewById(R.id.progressbar);
+    }
+
     private void pushToCityWiseRequestsNode(String request_id) {
 
         dbRef_City_Requests
@@ -176,13 +187,21 @@ public class MakeDonationRequest extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             setResult(Activity.RESULT_OK);
-                            progressBar.setVisibility(View.GONE);
+
+                            //log a DONATION REQUEST ADDED EVENT to firebase analytics
+                            Bundle params=new Bundle();
+                            params.putString("REQUEST_MADE_FROM",donation_request.getRequest_location().getLocation_city());
+                            params.putString("REQUEST_BLOOD_TYPE",donation_request.getBlood_type());
+                            firebaseAnalytics.logEvent(DONATION_REQUEST_ADD_EVENT,params);
+                            firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+                            progressBar.setVisibility(View.INVISIBLE);
                             finish();
                         }else{
                             Toast.makeText(
                                     getApplicationContext(),
                                     "Request could not be posted!",Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -217,5 +236,12 @@ public class MakeDonationRequest extends AppCompatActivity {
             editTextRequestMessage.setError(null);
         }
         return true;
-    };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.admin_options_menu, menu);
+        return true;
+    }
+
 }

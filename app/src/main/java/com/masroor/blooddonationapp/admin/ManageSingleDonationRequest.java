@@ -3,6 +3,8 @@ package com.masroor.blooddonationapp.admin;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mapzen.speakerbox.Speakerbox;
@@ -18,6 +21,8 @@ import com.masroor.blooddonationapp.Strs;
 
 public class ManageSingleDonationRequest extends AppCompatActivity {
 
+    public static final String DONATION_REQUEST_DELETE_EVENT = "DONATION_REQUEST_DELETE_EVENT";
+    FirebaseAnalytics firebaseAnalytics;
     DatabaseReference dbRef_city_reqs,dbRef_reqs;
     String  location_name,blood_type,request_message,
             req_id,req_city,req_loc_id;
@@ -32,6 +37,7 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_single_donation_request);
 
+        firebaseAnalytics=FirebaseAnalytics.getInstance(this);
         referViewElements();
         extractIntentData();
         populateViewElements();
@@ -124,8 +130,23 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+
+                        //log CUSTOM FIREBASE ANALYTICS EVENT FOR DONATION REQUEST DELETION
+                        Bundle params=new Bundle();
+                        params.putString("REQUEST_CITY",location_name);
+                        params.putString("REQUEST_BLOOD_TYPE",blood_type);
+                        firebaseAnalytics.logEvent(DONATION_REQUEST_DELETE_EVENT,params);
+                        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
                         finish();
                     }
                 });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.admin_options_menu, menu);
+        return true;
+    }
+
 }
