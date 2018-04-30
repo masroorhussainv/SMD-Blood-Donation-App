@@ -36,7 +36,7 @@ import com.masroor.blooddonationapp.model.DonationRequestModel;
 public class MakeDonationRequest extends AppCompatActivity {
 
     Tracker mTracker;
-    private String activityName="";
+    private String activityName="Admin Make Donation Request Activity";
     public static final String DONATION_REQUEST_ADD_EVENT = "DONATION_REQUEST_ADD_EVENT";
     FirebaseAnalytics firebaseAnalytics;        //for logging custom event of posting a donation request
 
@@ -75,10 +75,10 @@ public class MakeDonationRequest extends AppCompatActivity {
         mTracker = application.getDefaultTracker();
     }
 
-    public void logDonationRequestPostedEvent(){
+    public void logDonationRequestPostedEvent(String loc_name){
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
-                .setAction("Admin Posted Donation request").build());
+                .setAction("Admin Posted Donation request from "+loc_name).build());
     }
 
     @Override
@@ -215,7 +215,7 @@ public class MakeDonationRequest extends AppCompatActivity {
                             firebaseAnalytics.logEvent(DONATION_REQUEST_ADD_EVENT,params);
                             firebaseAnalytics.setAnalyticsCollectionEnabled(true);
 
-                            logDonationRequestPostedEvent();
+                            logDonationRequestPostedEvent(donation_request.getRequest_location().getLocation_name());
 
                             progressBar.setVisibility(View.INVISIBLE);
                             finish();
@@ -260,10 +260,10 @@ public class MakeDonationRequest extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.admin_options_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.admin_options_menu, menu);
+//        return true;
+//    }
 
 }

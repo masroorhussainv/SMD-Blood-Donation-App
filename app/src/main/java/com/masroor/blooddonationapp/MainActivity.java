@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
                             vibratePhone();
 
-                            logAdminSignInEvent();
+                            logAdminSignInEvent(loc.getLocation_name());
 
                             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
@@ -322,13 +322,13 @@ public class MainActivity extends AppCompatActivity {
         mTracker = application.getDefaultTracker();
     }
 
-    public void logAdminSignInEvent(){
+    public void logAdminSignInEvent(String location_n){
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("SignIn")
-                .setAction("Admin Signed In").build());
+                .setAction("Admin from "+location_n+" Signed In").build());
     }
 
-    public void logDonorSignInEvent(){
+    public void logDonorSignInEvent( ){
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("SignIn")
                 .setAction("Donor Signed In").build());

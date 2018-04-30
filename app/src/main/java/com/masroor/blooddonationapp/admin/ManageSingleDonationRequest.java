@@ -43,11 +43,11 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
         mTracker = application.getDefaultTracker();
     }
 
-    protected void logDonationRequestDeletedEvent() {
+    protected void logDonationRequestDeletedEvent(String loc_name) {
 
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
-                .setAction("Donation Request Deleted by Admin").build());
+                .setAction("Donation Request Deleted by Admin from "+loc_name).build());
     }
 
     @Override
@@ -159,7 +159,7 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
 //                        firebaseAnalytics.logEvent(DONATION_REQUEST_DELETE_EVENT,params);
 //                        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
 
-                        logDonationRequestDeletedEvent();
+                        logDonationRequestDeletedEvent(location_name);
 
                         finish();
                     }

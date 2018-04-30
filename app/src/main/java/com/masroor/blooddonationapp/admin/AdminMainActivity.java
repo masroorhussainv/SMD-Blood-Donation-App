@@ -247,7 +247,7 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     private void logSignOutEvent() {
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Sign out")
-                .setAction("Admin Sign Out").build());
+                .setAction("Admin from "+location_name+" Sign Out").build());
     }
 
     private void vibratePhone(){
