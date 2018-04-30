@@ -2,8 +2,12 @@ package com.masroor.blooddonationapp.donor;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -177,9 +181,20 @@ public class DonorMainActivity extends AppCompatActivity {
         com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
         Intent intent=new Intent(getApplicationContext(),com.masroor.blooddonationapp.MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        vibratePhone();
+        
+        logSignOutEvent();
+
         startActivity(intent);
         dialog.dismiss();
         finish();
+    }
+
+    private void logSignOutEvent() {
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Sign out")
+                .setAction("Donor Sign Out").build());
     }
 
     @Override
@@ -200,6 +215,19 @@ public class DonorMainActivity extends AppCompatActivity {
                     Snackbar.make(cl,"No invites sent.",Snackbar.LENGTH_SHORT).show();
                 }
             }break;
+        }
+    }
+
+    private void vibratePhone(){
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assert v != null;
+            v.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            //deprecated in API 26
+            assert v != null;
+            v.vibrate(500);
         }
     }
 }

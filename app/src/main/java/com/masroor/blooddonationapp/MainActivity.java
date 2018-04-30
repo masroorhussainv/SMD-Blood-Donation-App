@@ -2,9 +2,13 @@ package com.masroor.blooddonationapp;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.XmlResourceParser;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -155,6 +159,10 @@ public class MainActivity extends AppCompatActivity {
 
                             dialog.dismiss();
 
+                            vibratePhone();
+
+                            logAdminSignInEvent();
+
                             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                             finish();
@@ -207,9 +215,12 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra(Strs.DONOR_BLOOD_TYPE,bloodtype);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+
+                    vibratePhone();
+
                     dialog.dismiss();
 
-                    logAdminSignInEvent();
+                    logDonorSignInEvent();
 
                     startActivity(i);
                     finish();
@@ -321,6 +332,20 @@ public class MainActivity extends AppCompatActivity {
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("SignIn")
                 .setAction("Donor Signed In").build());
+    }
+
+
+    private void vibratePhone(){
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assert v != null;
+            v.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            //deprecated in API 26
+            assert v != null;
+            v.vibrate(500);
+        }
     }
 
 }
