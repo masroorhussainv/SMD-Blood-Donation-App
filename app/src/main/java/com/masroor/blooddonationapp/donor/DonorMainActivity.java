@@ -183,7 +183,7 @@ public class DonorMainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         vibratePhone();
-        
+
         logSignOutEvent();
 
         startActivity(intent);
