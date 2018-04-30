@@ -4,17 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mapzen.speakerbox.Speakerbox;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 
 public class ViewSingleDonationRequest extends AppCompatActivity implements View.OnClickListener {
+
+    Tracker mTracker;
+    private String activityName="Individual Donation Request Activity";
 
     Activity activity=this;
 
@@ -30,6 +37,8 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_single_donation_request);
+
+        setGA_Tracker();
 
         referViewElements();
         extractIntentData();
@@ -49,6 +58,9 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
                     intent.putExtra(Strs.ADMIN_LOCATION_LATITUDE,latitude);
                     intent.putExtra(Strs.ADMIN_LOCATION_LONGITUDE,longitude);
                     intent.putExtra(Strs.ADMIN_LOCATION_NAME,location_name);
+
+                    logGetDirectionsEvent();
+
                 startActivity(intent);
             }
         });
@@ -96,7 +108,39 @@ public class ViewSingleDonationRequest extends AppCompatActivity implements View
                         "Speaking!", Toast.LENGTH_SHORT).show();
                 Speakerbox speakerbox = new Speakerbox(activity.getApplication());
                 speakerbox.play(request_message);
+
+                logTextToSpeechEvent();
+
             }break;
         }
     }
+
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("google analytics event", "Setting screen name: " + activityName);
+        mTracker.setScreenName("activity: " + activityName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Donor Viewed Individual Donation Request").build());
+    }
+
+    public void logGetDirectionsEvent(){
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Get Directions Action")
+                .setAction("Donor Pressed Get Direction Button").build());
+    }
+
+    public void logTextToSpeechEvent(){
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Text to Speech")
+                .setAction("Donor Pressed Text to Speech button").build());
+    }
+
 }

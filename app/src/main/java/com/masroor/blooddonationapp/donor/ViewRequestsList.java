@@ -6,26 +6,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 import com.masroor.blooddonationapp.model.DonationRequestModel;
 import com.masroor.blooddonationapp.viewholder.DonationRequestViewHolder;
 
 public class ViewRequestsList extends AppCompatActivity {
 
-
-    public static final String REQUEST_ID ="request_id";
-    public static final String REQUEST_CITY = "request_city";
-    public static final String REQUEST_LOC_ID = "request_loc_id";
-
+    Tracker mTracker;
+    private String activityName="Donor View Requests Activity";
 
     //for fetching and displaying requests list
     FirebaseRecyclerAdapter adapter;
@@ -44,6 +45,8 @@ public class ViewRequestsList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_requests_list);
+
+        setGA_Tracker();
 
         recyclerView_requests=findViewById(R.id.recyclerview_requests_list);
         city_name_for_requests=getIntent().getExtras().getString(Strs.DONOR_CITY);
@@ -108,5 +111,21 @@ public class ViewRequestsList extends AppCompatActivity {
         recyclerView_requests.setAdapter(adapter);
         recyclerView_requests.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("google analytics event", "Setting screen name: " + activityName);
+        mTracker.setScreenName("activity: " + activityName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Donor Viewed List of Donation Requests").build());
     }
 }

@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,16 +18,21 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 
 import static com.masroor.blooddonationapp.admin.AdminMainActivity.RC_POST_DONATION_REQUEST;
 import static com.masroor.blooddonationapp.admin.AdminMainActivity.REQUEST_INVITE;
 
 public class DonorMainActivity extends AppCompatActivity {
 
+    Tracker mTracker;
+    private String activityName="Donor Main Activity";
     AdView adView;
 
     TextView textViewName,textViewBloodType,textViewCity;
@@ -38,6 +44,8 @@ public class DonorMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor_main);
+
+        setGA_Tracker();
 
         referViewElements();
         initializeAdMob();
@@ -69,6 +77,11 @@ public class DonorMainActivity extends AppCompatActivity {
         adView.loadAd(adRequest);
     }
 
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -79,6 +92,14 @@ public class DonorMainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         adView.resume();
+        Log.i("google analytics event", "Setting screen name: " + activityName);
+        mTracker.setScreenName("activity: " + activityName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Donor opened DonorMainActivity").build());
+
     }
 
     @Override

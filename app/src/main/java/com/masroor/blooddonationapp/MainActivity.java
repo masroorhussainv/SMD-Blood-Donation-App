@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.XmlResourceParser;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +16,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 import com.masroor.blooddonationapp.donor.DonorMainActivity;
 import com.masroor.blooddonationapp.donor.GetDonorDetailsActivity;
 import com.masroor.blooddonationapp.model.AdminLocationModel;
@@ -30,6 +34,8 @@ import java.util.Arrays;
 //import admin.AdminMainActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    Tracker mTracker;
 
     public static final String ADMIN_LOGGED_IN = "ADMIN_LOGGED_IN";
     final int RC_FIREBASE_UI_FLOW=111;
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnLoginSignup=findViewById(R.id.button_signin);
 
+        checkGA_TrackingID();
+        setGA_Tracker();
 
         //if signed in
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
@@ -201,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
 
                     dialog.dismiss();
 
+                    logAdminSignInEvent();
+
                     startActivity(i);
                     finish();
 
@@ -208,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
                     //add this uid to db
                     Intent i=new Intent(getApplicationContext(), GetDonorDetailsActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    logDonorSignInEvent();
 
                     startActivity(i);
                     finish();
@@ -258,5 +270,57 @@ public class MainActivity extends AppCompatActivity {
 ////            }
 ////        });
 //    }
+
+    public void checkGA_TrackingID(){
+        if (!checkConfiguration()) {
+            View contentView = findViewById(android.R.id.content);
+            Snackbar.make(contentView, R.string.bad_config, Snackbar.LENGTH_INDEFINITE).show();
+        }
+    }
+    private boolean checkConfiguration() {
+        XmlResourceParser parser = getResources().getXml(R.xml.global_tracker);
+
+        boolean foundTag = false;
+        try {
+            while (parser.getEventType() != XmlResourceParser.END_DOCUMENT) {
+                if (parser.getEventType() == XmlResourceParser.START_TAG) {
+                    String tagName = parser.getName();
+                    String nameAttr = parser.getAttributeValue(null, "name");
+
+                    foundTag = "string".equals(tagName) && "ga_trackingId".equals(nameAttr);
+                }
+
+                if (parser.getEventType() == XmlResourceParser.TEXT) {
+                    if (foundTag && parser.getText().contains("REPLACE_ME")) {
+                        return false;
+                    }
+                }
+
+                parser.next();
+            }
+        } catch (Exception e) {
+            Log.w("checkConfiguration", "checkConfiguration", e);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    public void logAdminSignInEvent(){
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("SignIn")
+                .setAction("Admin Signed In").build());
+    }
+
+    public void logDonorSignInEvent(){
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("SignIn")
+                .setAction("Donor Signed In").build());
+    }
 
 }

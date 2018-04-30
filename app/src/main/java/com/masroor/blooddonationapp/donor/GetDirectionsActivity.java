@@ -26,6 +26,7 @@ public class GetDirectionsActivity extends FragmentActivity implements OnMapRead
     double destination_latitude,destination_longitude;  //passed to this activity in intent
     String destination_location_name;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

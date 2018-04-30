@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,11 +29,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 import com.masroor.blooddonationapp.model.AdminLocationModel;
 import com.masroor.blooddonationapp.model.DonationRequestModel;
 
 public class MakeDonationRequest extends AppCompatActivity {
 
+    Tracker mTracker;
+    private String activityName="";
     public static final String DONATION_REQUEST_ADD_EVENT = "DONATION_REQUEST_ADD_EVENT";
     FirebaseAnalytics firebaseAnalytics;        //for logging custom event of posting a donation request
 
@@ -64,10 +69,25 @@ public class MakeDonationRequest extends AppCompatActivity {
     //use all the above varibles to construct this Donation request model
     DonationRequestModel donation_request;
 
+
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    public void logDonationRequestPostedEvent(){
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Admin Posted Donation request").build());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_make_donation_request);
+
+        setGA_Tracker();
+
 
         firebaseAnalytics=FirebaseAnalytics.getInstance(this);
         referViewElements();
@@ -78,13 +98,13 @@ public class MakeDonationRequest extends AppCompatActivity {
 
         //extract values for admin location model
         final Bundle locationBundle=getIntent().getExtras();
-        assert locationBundle != null;
-        AdminLocationModel adminLocationModel=new AdminLocationModel(
-                locationBundle.getDouble(Strs.ADMIN_LOCATION_LONGITUDE),
-                locationBundle.getDouble(Strs.ADMIN_LOCATION_LATITUDE),
-                locationBundle.getString(Strs.ADMIN_LOCATION_NAME),
-                locationBundle.getString(Strs.ADMIN_LOCATION_CITY)
-        );
+//        assert locationBundle != null;
+//        AdminLocationModel adminLocationModel=new AdminLocationModel(
+//                locationBundle.getDouble(Strs.ADMIN_LOCATION_LONGITUDE),
+//                locationBundle.getDouble(Strs.ADMIN_LOCATION_LATITUDE),
+//                locationBundle.getString(Strs.ADMIN_LOCATION_NAME),
+//                locationBundle.getString(Strs.ADMIN_LOCATION_CITY)
+//        );
 
 
         // listener for 'Post Donation Req' button
@@ -194,6 +214,8 @@ public class MakeDonationRequest extends AppCompatActivity {
                             params.putString("REQUEST_BLOOD_TYPE",donation_request.getBlood_type());
                             firebaseAnalytics.logEvent(DONATION_REQUEST_ADD_EVENT,params);
                             firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+                            logDonationRequestPostedEvent();
 
                             progressBar.setVisibility(View.INVISIBLE);
                             finish();

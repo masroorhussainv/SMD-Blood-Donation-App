@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -18,8 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mapzen.speakerbox.Speakerbox;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 
 public class ManageSingleDonationRequest extends AppCompatActivity {
+
+    Tracker mTracker;
 
     public static final String DONATION_REQUEST_DELETE_EVENT = "DONATION_REQUEST_DELETE_EVENT";
     FirebaseAnalytics firebaseAnalytics;
@@ -32,10 +37,26 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
     Button btnDeleteRequest;
     ImageView speakMessage;
 
+
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    protected void logDonationRequestDeletedEvent() {
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Donation Request Deleted by Admin").build());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_single_donation_request);
+
+
+        setGA_Tracker();
 
         firebaseAnalytics=FirebaseAnalytics.getInstance(this);
         referViewElements();
@@ -131,12 +152,14 @@ public class ManageSingleDonationRequest extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        //log CUSTOM FIREBASE ANALYTICS EVENT FOR DONATION REQUEST DELETION
-                        Bundle params=new Bundle();
-                        params.putString("REQUEST_CITY",location_name);
-                        params.putString("REQUEST_BLOOD_TYPE",blood_type);
-                        firebaseAnalytics.logEvent(DONATION_REQUEST_DELETE_EVENT,params);
-                        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+//                        //log CUSTOM FIREBASE ANALYTICS EVENT FOR DONATION REQUEST DELETION
+//                        Bundle params=new Bundle();
+//                        params.putString("REQUEST_CITY",location_name);
+//                        params.putString("REQUEST_BLOOD_TYPE",blood_type);
+//                        firebaseAnalytics.logEvent(DONATION_REQUEST_DELETE_EVENT,params);
+//                        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+                        logDonationRequestDeletedEvent();
 
                         finish();
                     }

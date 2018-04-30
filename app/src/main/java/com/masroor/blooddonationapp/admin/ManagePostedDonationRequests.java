@@ -15,16 +15,21 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 import com.masroor.blooddonationapp.model.DonationRequestModel;
 import com.masroor.blooddonationapp.viewholder.DonationRequestViewHolder;
 
 public class ManagePostedDonationRequests extends AppCompatActivity {
 
+    Tracker mTracker;
+    private String activityName="Admin Manage Requests Activity";
 
     public static final String REQUEST_ID ="request_id";
     public static final String REQUEST_CITY = "request_city";
@@ -39,6 +44,8 @@ public class ManagePostedDonationRequests extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_posted_requests);
+
+        setGA_Tracker();
 
         recyclerView=findViewById(R.id.recyclerview);
 
@@ -127,5 +134,19 @@ public class ManagePostedDonationRequests extends AppCompatActivity {
         return true;
     }
 
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("google analytics event", "Setting screen name: " + activityName);
+        mTracker.setScreenName("activity: " + activityName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Admin Viewed list of Posted Donation Requests").build());
+    }
 }

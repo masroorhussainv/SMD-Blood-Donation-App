@@ -77,4 +77,6 @@
     <string name="proceed">Proceed</string>
     <string name="subject">Subject</string>
 
+    <string name="bad_config">Bad GA Tracking ID</string>
+
 </resources>

@@ -18,12 +18,18 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.masroor.blooddonationapp.R;
 import com.masroor.blooddonationapp.Strs;
+import com.masroor.blooddonationapp.app.AnalyticsApplication;
 import com.masroor.blooddonationapp.model.AdminLocationModel;
 
 public class AdminMainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Tracker mTracker;
+    private String activityName="Admin Main Activity";
 
     public static final int RC_POST_DONATION_REQUEST = 123;
     public static final int REQUEST_INVITE=432;
@@ -40,6 +46,8 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
+
+        setGA_Tracker();
 
         referViewElements();
         initializeAdMob();
@@ -61,6 +69,11 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         btnManageReq.setOnClickListener(this);
     }
 
+    private void setGA_Tracker() {
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
     private void loadAd() {
         AdRequest adRequest=new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -79,6 +92,13 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         adView.resume();
+        Log.i("google analytics event", "Setting screen name: " + activityName);
+        mTracker.setScreenName("activity: " + activityName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Admin opened AdminMainActivity").build());
     }
 
     @Override
