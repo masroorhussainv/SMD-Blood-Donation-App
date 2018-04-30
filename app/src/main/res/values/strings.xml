@@ -79,4 +79,8 @@
 
     <string name="bad_config">Bad GA Tracking ID</string>
 
+
+    //facebook
+    <string name="facebook_app_id">160517254645543</string>
+
 </resources>

@@ -103,6 +103,9 @@ public class ViewRequestsList extends AppCompatActivity {
                         i.putExtra(Strs.ADMIN_LOCATION_LATITUDE,
                                 model.getRequest_location().getLocation_latitude());
 
+                        //to be used for posting to social media
+                        i.putExtra(Strs.ADMIN_LOCATION_CITY,model.getRequest_location().getLocation_city());
+
                         startActivity(i);
                     }
                 });
